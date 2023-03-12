@@ -11,8 +11,9 @@ import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
 import { Grid } from "@mui/material";
 import CartWidget from "../CartWidget/CartWidget";
+import { Link } from "react-router-dom";
 
-const pages = ["Productos", "Sucursales", "Nosotros", "Contacto"];
+const pages = ["Empanadas", "Comidas", "Pizzas"];
 
 function Navbar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -29,14 +30,15 @@ function Navbar() {
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <Grid sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}>
-            <img
-              src="https://res.cloudinary.com/ddwaowcsz/image/upload/v1677376361/logo_rincon_norteno_jvamzl.webp"
-              alt="logo"
-              height={56}
-            />
-          </Grid>
-
+          <Link to="/">
+            <Grid sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}>
+              <img
+                src="https://res.cloudinary.com/ddwaowcsz/image/upload/v1677376361/logo_rincon_norteno_jvamzl.webp"
+                alt="logo"
+                height={56}
+              />
+            </Grid>
+          </Link>
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
               size="large"
@@ -82,13 +84,15 @@ function Navbar() {
           </Grid>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "white", display: "block" }}
-              >
-                {page}
-              </Button>
+              <Link to={`/category/${page}`} style={{ textDecoration: "none" }}>
+                <Button
+                  key={page}
+                  onClick={handleCloseNavMenu}
+                  sx={{ my: 2, color: "white", display: "block" }}
+                >
+                  {page}
+                </Button>
+              </Link>
             ))}
           </Box>
           <CartWidget numero={0} />
