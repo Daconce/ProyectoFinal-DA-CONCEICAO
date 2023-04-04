@@ -48,8 +48,6 @@ const CartContextProvider = ({ children }) => {
     return precioTotal;
   };
 
-  // ELIMINAR UN PRODUCTO DEL CARRITO
-
   const deleteProductById = (id) => {
     const newCart = cart.filter((element) => element.id !== id); // []
     setCart(newCart);
