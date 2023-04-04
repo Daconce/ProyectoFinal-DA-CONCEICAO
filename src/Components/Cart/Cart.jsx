@@ -53,7 +53,7 @@ const Cart = () => {
                     <h2>${item.price}.-</h2>
                     <h2>Unidades: {item.quantity}</h2>
                     <Button
-                      color="primary"
+                      sx={{ backgroundColor: "#E64848" }}
                       variant="contained"
                       onClick={() => deleteProductById(item.id)}
                     >

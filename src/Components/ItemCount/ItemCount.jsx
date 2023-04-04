@@ -24,7 +24,11 @@ const ItemCount = ({ stock, initial = 1, onAdd }) => {
         <Button variant="outlined" onClick={restar}>
           -
         </Button>
-        <Button variant="contained" onClick={() => onAdd(contador)}>
+        <Button
+          variant="contained"
+          sx={{ backgroundColor: "#E64848" }}
+          onClick={() => onAdd(contador)}
+        >
           agregar al carrito
         </Button>
 

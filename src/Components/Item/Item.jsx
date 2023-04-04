@@ -1,7 +1,4 @@
 import React from "react";
-
-import styles from "./Item.module.css";
-
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -16,19 +13,19 @@ const Item = ({ element }) => {
       sx={{
         width: 345,
         height: 300,
-        backgroundColor: "#1976d2",
+        backgroundColor: "#E64848",
         color: "white",
-        border: "1px solid black",
+        border: "3px solid #E64848",
         borderRadius: "10px",
         boxShadow: "0px 0px 10px black",
       }}
     >
       <CardMedia
-        sx={{ height: 160, backgroundColor: "grey" }}
+        sx={{ height: 180, backgroundColor: "grey" }}
         image={element.img}
         title={element.title}
       />
-      <CardContent sx={{ height: 40 }}>
+      <CardContent sx={{ height: 35 }}>
         <Typography gutterBottom variant="h5" component="div" align="center">
           {element.title}
         </Typography>
