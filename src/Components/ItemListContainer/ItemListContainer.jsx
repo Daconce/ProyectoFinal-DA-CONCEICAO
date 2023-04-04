@@ -1,30 +1,53 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { products } from "../../productsMock";
+import { db } from "../../firebaseConfig";
 import ItemList from "../ItemList/ItemList";
+import PulseLoader from "react-spinners/PulseLoader";
+import { collection, getDocs, query, where } from "firebase/firestore";
 
 const ItemListContainer = () => {
   const { categoryName } = useParams();
 
   const [items, setItems] = useState([]);
 
-  const filteredProducts = products.filter(
-    (elemento) => elemento.category === categoryName
-  );
-
   useEffect(() => {
-    const productList = new Promise((resolve, reject) => {
-      resolve(categoryName ? filteredProducts : products);
-    });
+    const itemsCollection = collection(db, "products");
+    let consulta = undefined;
+    if (categoryName) {
+      const q = query(itemsCollection, where("category", "==", categoryName));
+      consulta = getDocs(q);
+    } else {
+      consulta = getDocs(itemsCollection);
+    }
 
-    productList
-      .then((res) => {
-        setItems(res);
-      })
-      .catch((error) => {
-        console.log(error);
+    consulta.then((res) => {
+      let products = res.docs.map((product) => {
+        return {
+          ...product.data(),
+          id: product.id,
+        };
       });
+      setItems(products);
+    });
   }, [categoryName]);
+
+  if (items.length === 0) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        <PulseLoader
+          color={"#1976d2"}
+          size={50}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+        />
+      </div>
+    );
+  }
 
   return (
     <div>

@@ -13,7 +13,7 @@ import { Grid } from "@mui/material";
 import CartWidget from "../CartWidget/CartWidget";
 import { Link } from "react-router-dom";
 
-const pages = ["Empanadas", "Comidas", "Pizzas"];
+const pages = ["todos", "empanadas", "comidas", "pizzas"];
 
 function Navbar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -69,9 +69,19 @@ function Navbar() {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
-                </MenuItem>
+                <Link
+                  className="link"
+                  to={page === "todos" ? `/` : `/category/${page}`}
+                  key={Math.floor(Math.random() * 100)}
+                  style={{
+                    textDecoration: "none",
+                    color: "#1976d2",
+                  }}
+                >
+                  <MenuItem key={page} onClick={handleCloseNavMenu}>
+                    <Typography textAlign="center">{page}</Typography>
+                  </MenuItem>
+                </Link>
               ))}
             </Menu>
           </Box>
@@ -84,7 +94,14 @@ function Navbar() {
           </Grid>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
-              <Link to={`/category/${page}`} style={{ textDecoration: "none" }}>
+              <Link
+                className="link"
+                to={page === "todos" ? `/` : `/category/${page}`}
+                key={page}
+                style={{
+                  textDecoration: "none",
+                }}
+              >
                 <Button
                   key={page}
                   onClick={handleCloseNavMenu}

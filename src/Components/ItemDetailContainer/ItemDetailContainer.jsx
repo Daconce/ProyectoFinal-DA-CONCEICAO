@@ -1,34 +1,55 @@
-import React from "react";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import Typography from "@mui/material/Typography";
-import { Button, CardActionArea, CardActions } from "@mui/material";
-import { useParams } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
 
-import { products } from "../../productsMock";
+import { useParams } from "react-router-dom";
+import Swal from "sweetalert2";
+import { CartContext } from "../../context/CartContext";
+
+import { getDoc, collection, doc } from "firebase/firestore";
+import { db } from "../../firebaseConfig";
+import ItemDetail from "../ItemDetail/ItemDetail";
 
 const ItemDetailContainer = () => {
   const { id } = useParams();
 
-  const productSelected = products.find((element) => element.id === Number(id));
+  const { agregarAlCarrito, getQuantityById } = useContext(CartContext);
+
+  const [productSelected, setProductSelected] = useState({});
+
+  useEffect(() => {
+    const itemCollection = collection(db, "products");
+    const ref = doc(itemCollection, id);
+    getDoc(ref).then((res) => {
+      setProductSelected({
+        ...res.data(),
+        id: res.id,
+      });
+    });
+  }, [id]);
+
+  const onAdd = (cantidad) => {
+    let producto = {
+      ...productSelected,
+      quantity: cantidad,
+    };
+
+    agregarAlCarrito(producto);
+    Swal.fire({
+      position: "center",
+      icon: "success",
+      title: "Producto agregado exitosamente",
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  };
+
+  let quantity = getQuantityById(Number(id));
 
   return (
-    <Card sx={{ maxWidth: 345 }}>
-      <CardActionArea>
-        <CardMedia
-          component="img"
-          height="200"
-          image={productSelected.img}
-          alt={productSelected.title}
-        />
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
-            {productSelected.title}
-          </Typography>
-        </CardContent>
-      </CardActionArea>
-    </Card>
+    <ItemDetail
+      productSelected={productSelected}
+      onAdd={onAdd}
+      quantity={quantity}
+    />
   );
 };
 
